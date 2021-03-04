@@ -123,31 +123,11 @@ int main(void) {
 		/* USER CODE BEGIN 3 */
 
 		ADCPollingMethodUpdate();
-		//test();
-		//PutSW[0]=HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
+
+
 		if (HAL_GetTick() - timeStamp >= 100) {
 			timeStamp = HAL_GetTick();
-			PutSW[0] = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
-			if (PutSW[1] == GPIO_PIN_SET && PutSW[0] == GPIO_PIN_RESET) {
-				//HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
-				if (ADCMode == 0) {
-					ADCMode = 1;
-				} else {
-					ADCMode = 0;
-				}
-			}
-			PutSW[1] = PutSW[0];
-		}
-		//ADCMode=count%2;
-		switch (ADCMode) {
-		case 0:
-
-			ADCOutputConverted = ((Vcc / Vres) * ADCChannel[0].data) * 1000;
-			break;
-		case 1:
-			ADCOutputConverted = ((((Vcc / Vres) * ADCChannel[1].data) - V25)
-					/ Avg) + 25;
-			break;
+			test();
 		}
 
 	}
@@ -340,24 +320,25 @@ void ADCPollingMethodUpdate() {
 		HAL_ADC_Stop(&hadc1);
 	}
 }
-//void test()
-//{
-//	PutSW[0]=HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
-//	if(PutSW[1]==GPIO_PIN_SET&&PutSW[0]==GPIO_PIN_RESET)
-//	{
-//		count++;
-//	}
-//	PutSW[1]=PutSW[0];
-//	ADCMode=count%2;
-//	switch(ADCMode){
-//	case 0:
-//		ADCOutputConverted=((3.3/2^12)*(ADCChannel[0].data))*1000;
-//		break;
-//	case 1:
-//		ADCOutputConverted=((ADCChannel[1].data-0.76)/(2.5/1000))+25;
-//		break;
-//	}
-//}
+void test()
+{
+	PutSW[0] = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
+	if (PutSW[1] == GPIO_PIN_SET && PutSW[0] == GPIO_PIN_RESET) {
+		count++;
+	}
+	PutSW[1] = PutSW[0];
+		ADCMode=count%2;
+		switch (ADCMode) {
+		case 0:
+
+			ADCOutputConverted = ((Vcc / Vres) * ADCChannel[0].data) * 1000;
+			break;
+		case 1:
+			ADCOutputConverted = ((((Vcc / Vres) * ADCChannel[1].data) - V25)
+					/ Avg) + 25;
+			break;
+		}
+}
 /* USER CODE END 4 */
 
 /**
